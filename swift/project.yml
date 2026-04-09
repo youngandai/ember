@@ -1,0 +1,37 @@
+name: Ember
+options:
+  bundleIdPrefix: com.youngandai
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "16.4"
+targets:
+  Ember:
+    type: application
+    platform: macOS
+    sources:
+      - Ember
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGN_ENTITLEMENTS: ""
+        ENABLE_APP_SANDBOX: "NO"
+        GENERATE_INFOPLIST_FILE: "YES"
+        INFOPLIST_KEY_NSMicrophoneUsageDescription: "Ember needs microphone access to record stories."
+      configs:
+        Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: com.youngandai.Ember.dev
+          PRODUCT_NAME: "Ember Dev"
+          ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        Release:
+          PRODUCT_BUNDLE_IDENTIFIER: com.youngandai.Ember
+          PRODUCT_NAME: Ember
+          ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    info:
+      path: Ember/Info.plist
+      properties:
+        NSMicrophoneUsageDescription: "Ember needs microphone access to record stories."
