@@ -98,3 +98,12 @@ jobs:
             "build/$APP_NAME-${VERSION}.dmg" \
             --repo "$RELEASES_REPO" \
             --clobber || echo "No release found for $APPCAST_DIR-v${VERSION}"
+
+      - name: Update dmg-latest release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          cp "build/$APP_NAME-${VERSION}.dmg" "build/$APP_NAME.dmg"
+          gh release upload dmg-latest "build/$APP_NAME.dmg" --clobber
+          gh release edit dmg-latest --notes "DMG installer for Ember v${VERSION}"

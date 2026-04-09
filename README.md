@@ -8,9 +8,7 @@ Ember is a macOS app for capturing audio stories from family members and loved o
 
 ## Download the App
 
-**[⬇ Download Ember for Mac](https://github.com/youngandai/ember/releases/latest/download/Ember.dmg)**
-
-This link always points to the latest release. Open the `.dmg`, drag Ember to your Applications folder, and you're ready.
+**[⬇ Download Ember for Mac](https://github.com/youngandai/ember/releases/download/dmg-latest/Ember.dmg)**
 
 **Requirements:** macOS 14 (Sonoma) or later, Apple Silicon or Intel Mac.
 
@@ -18,9 +16,9 @@ This link always points to the latest release. Open the `.dmg`, drag Ember to yo
 
 Ember uses two AI services. Before recording your first story, open **Settings (⌘,)** and add your API keys:
 
-| Setting | Where to get it |
-|---|---|
-| OpenAI API key | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
+| Setting           | Where to get it                                                                    |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| OpenAI API key    | [platform.openai.com/api-keys](https://platform.openai.com/api-keys)               |
 | Anthropic API key | [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) |
 
 Keys are saved locally on your Mac and never sent anywhere except directly to those APIs.
@@ -38,16 +36,16 @@ Keys are saved locally on your Mac and never sent anywhere except directly to th
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|---|---|
-| `⌘,` | Open Settings |
-| `⌘1` | Record |
-| `⌘2` | Stories |
-| `⌘R` | Start / Pause recording |
-| `⌘.` | Stop recording |
-| `⌘T` | Transcribe selected session |
-| `⌘M` | Generate memoir |
-| `⌘↩` | View memoir |
+| Shortcut | Action                      |
+| -------- | --------------------------- |
+| `⌘,`     | Open Settings               |
+| `⌘1`     | Record                      |
+| `⌘2`     | Stories                     |
+| `⌘R`     | Start / Pause recording     |
+| `⌘.`     | Stop recording              |
+| `⌘T`     | Transcribe selected session |
+| `⌘M`     | Generate memoir             |
+| `⌘↩`     | View memoir                 |
 
 ---
 
