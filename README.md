@@ -25,6 +25,15 @@ Keys are saved locally on your Mac and never sent anywhere except directly to th
 
 ---
 
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshot-record.png" width="480" alt="Record screen" />
+  <img src="docs/screenshot-stories.png" width="480" alt="Stories screen" />
+</p>
+
+---
+
 ## How It Works
 
 1. **Record** — Give your session a title, press the big amber button, and start talking. Pause or resume anytime. Press **Finish Recording** when done.
