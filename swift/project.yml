@@ -4,12 +4,18 @@ options:
   deploymentTarget:
     macOS: "14.0"
   xcodeVersion: "16.4"
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    from: "2.6.0"
 targets:
   Ember:
     type: application
     platform: macOS
     sources:
       - Ember
+    dependencies:
+      - package: Sparkle
     settings:
       base:
         SWIFT_VERSION: "5.9"
@@ -35,3 +41,5 @@ targets:
       path: Ember/Info.plist
       properties:
         NSMicrophoneUsageDescription: "Ember needs microphone access to record stories."
+        SUFeedURL: "https://youngandai.github.io/mac-app-releases/ember/appcast.xml"
+        SUPublicEDKey: "REPLACE_WITH_YOUR_SPARKLE_PUBLIC_KEY"

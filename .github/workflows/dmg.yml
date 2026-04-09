@@ -1,0 +1,100 @@
+# Create a DMG installer from an existing release .zip.
+#
+# This is a manually-triggered workflow that downloads the already-built,
+# signed, and notarized .zip from a GitHub Release and wraps it in a
+# pretty DMG with drag-to-Applications layout.
+#
+# DMGs are only needed for new users — existing users get updates via
+# Sparkle auto-update.
+#
+# The DMG uses `create-dmg` which requires AppleScript/Finder access,
+# so it must run on a self-hosted runner with the `dmg` label where
+# Finder automation has been pre-approved.
+
+name: Create DMG
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version tag (e.g. v1.2.3). Must have an existing release with a .zip artifact."
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: Ember
+  RELEASES_REPO: youngandai/mac-app-releases
+  APPCAST_DIR: ember
+
+jobs:
+  dmg:
+    runs-on: [self-hosted, macOS, dmg]
+
+    steps:
+      - name: Determine version
+        id: version
+        run: |
+          VERSION="${{ inputs.version }}"
+          VERSION="${VERSION#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Creating DMG for $APP_NAME v$VERSION"
+
+      - uses: actions/checkout@v5
+        with:
+          ref: v${{ steps.version.outputs.version }}
+          sparse-checkout: scripts
+
+      # ── Download the existing release .zip ──
+      - name: Download release ZIP
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          mkdir -p build
+          gh release download "v${VERSION}" \
+            --pattern "$APP_NAME.app.zip" \
+            --dir build
+          echo "Downloaded ZIP: $(du -h "build/$APP_NAME.app.zip" | cut -f1)"
+
+      # ── Extract .app from ZIP ──
+      - name: Extract app bundle
+        run: |
+          ditto -x -k "build/$APP_NAME.app.zip" build/
+          echo "Extracted $APP_NAME.app"
+          codesign -dvv "build/$APP_NAME.app" 2>&1 | head -5
+
+      # ── Create DMG ──
+      - name: Create DMG
+        env:
+          EMBER_VERSION: ${{ steps.version.outputs.version }}
+        run: scripts/make-app.sh dmg
+
+      # ── Upload ──
+      - name: Upload DMG artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: ${{ env.APP_NAME }}-${{ steps.version.outputs.version }}-dmg
+          path: build/${{ env.APP_NAME }}-${{ steps.version.outputs.version }}.dmg
+          retention-days: 90
+
+      - name: Attach DMG to GitHub releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release upload "v${VERSION}" \
+            "build/$APP_NAME-${VERSION}.dmg" \
+            --clobber || echo "No source release found for v${VERSION}"
+
+      - name: Attach DMG to mac-app-releases
+        env:
+          GH_TOKEN: ${{ secrets.MAC_APP_RELEASES_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          gh release upload "$APPCAST_DIR-v${VERSION}" \
+            "build/$APP_NAME-${VERSION}.dmg" \
+            --repo "$RELEASES_REPO" \
+            --clobber || echo "No release found for $APPCAST_DIR-v${VERSION}"
