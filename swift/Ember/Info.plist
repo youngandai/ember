@@ -20,5 +20,9 @@
 	<string>1</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Ember needs microphone access to record stories.</string>
+	<key>SUFeedURL</key>
+	<string>https://youngandai.github.io/mac-app-releases/ember/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>REPLACE_WITH_YOUR_SPARKLE_PUBLIC_KEY</string>
 </dict>
 </plist>
